@@ -6,7 +6,7 @@ plugins {
 }
 
 group "com.github.scorsi"
-version "1.0-SNAPSHOT"
+version "0.0.1-dev"
 
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ["src"]
