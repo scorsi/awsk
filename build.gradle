@@ -1,0 +1,55 @@
+plugins {
+    id "java-library"
+    id "maven-publish"
+    id "org.jetbrains.kotlin.jvm" version "1.3.72"
+    id "org.jetbrains.kotlin.plugin.serialization" version "1.3.72"
+}
+
+group "com.github.scorsi"
+version "1.0-SNAPSHOT"
+
+sourceSets {
+    main.kotlin.srcDirs = main.java.srcDirs = ["src"]
+    test.kotlin.srcDirs = test.java.srcDirs = ["test"]
+    main.resources.srcDirs = ["resources"]
+    test.resources.srcDirs = ["testresources"]
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
+    api "com.amazonaws:aws-lambda-java-events:3.1.0"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "com.github.scorsi"
+            artifactId = "awsk"
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/scorsi/awsk"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
